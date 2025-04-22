@@ -51,7 +51,7 @@ class XYDataset(Dataset):
 
 # 主函数（修改模型部分）
 def main():
-    dataset_dir = './image_label'  # 数据集路径
+    dataset_dir = './annotated_images'  # 数据集路径
     if not os.path.exists(dataset_dir):
         raise FileNotFoundError(f"数据集路径不存在: {dataset_dir}")
     
@@ -82,7 +82,7 @@ def main():
     # 训练参数
     num_epochs = 50
     best_loss = float('inf')
-    model_save_path = './best_mobilenet_model.pth'
+    model_save_path = './pth/best_mobilenet_model.pth'
 
     print("start training...")
     # 训练和测试循环（保持不变）
