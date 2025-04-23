@@ -135,8 +135,8 @@ def test_images_in_folder(image_folder, model_path, device, output_folder):
 
 if __name__ == "__main__":
     # 配置文件夹路径和模型路径
-    image_folder = './annotated_test'  # 替换为你的图片文件夹路径
-    best_model_path = './pth/best_mobilenet_model.pth'  # 替换为你的最佳模型路径
+    image_folder = './annotated_test_1'  # 替换为你的图片文件夹路径
+    best_model_path = './pth/mobilenet_model_1.pth'  # 替换为你的最佳模型路径
     output_folder = './predicted_result'  # 存放预测结果的文件夹
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 

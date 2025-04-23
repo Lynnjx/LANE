@@ -7,7 +7,7 @@ def main(args=None):
   model = timm.create_model('mobilenetv2_100', pretrained=False)
   model.classifier = torch.nn.Linear(model.classifier.in_features, 2)
   # model.load_state_dict(torch.load('./pth/best_mobilenet_model.pth'))
-  checkpoint = torch.load('./pth/best_mobilenet_model.pth')
+  checkpoint = torch.load('./pth/mobilenet_model_1.pth')
   if 'model_state_dict' in checkpoint:
     # 仅加载模型参数
     model.load_state_dict(checkpoint['model_state_dict'])
@@ -25,7 +25,7 @@ def main(args=None):
     print(f"模型输出形状: {torch_out.shape}")
   torch.onnx.export(model,
                     x,
-                    "./onnx/best_mobilenet_model_xy.onnx",
+                    "./onnx/mobilenet_model_1_xy.onnx",
                     export_params=True,
                     opset_version=11,
                     do_constant_folding=True,

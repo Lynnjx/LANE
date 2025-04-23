@@ -165,8 +165,8 @@ class XYDataset(Dataset):
     def __getitem__(self, idx):
         image_path = self.image_paths[idx]
         image = Image.open(image_path)
-        x = float(get_x(os.path.basename(image_path), 224))
-        y = float(get_y(os.path.basename(image_path), 224))
+        x = float(get_x(os.path.basename(image_path), 640))
+        y = float(get_y(os.path.basename(image_path), 480))
         
         if self.random_hflips and np.random.rand() > 0.5:
             image = transforms.functional.hflip(image)
@@ -187,7 +187,7 @@ def main():
     writer = SummaryWriter(log_dir)
     print(f"TensorBoard日志保存在: {log_dir}")
     
-    dataset_dir = './annotated_images'  # 数据集路径
+    dataset_dir = './annotated_images_1'  # 数据集路径
     if not os.path.exists(dataset_dir):
         raise FileNotFoundError(f"数据集路径不存在: {dataset_dir}")
     
@@ -232,7 +232,7 @@ def main():
     # 训练参数
     num_epochs = 50
     best_loss = float('inf')
-    model_save_path = os.path.join(model_dir, 'best_mobilenet_model.pth')
+    model_save_path = os.path.join(model_dir, 'mobilenet_model_1.pth')
 
     print("开始训练...")
     # 训练和测试循环
