@@ -25,7 +25,19 @@ def load_model(model_path, device):
     """加载保存的最佳模型"""
     model = timm.create_model('mobilenetv2_100', pretrained=False)
     model.classifier = torch.nn.Linear(model.classifier.in_features, 2)
-    model.load_state_dict(torch.load(model_path, map_location=device))
+    #model.load_state_dict(torch.load(model_path, map_location=device))
+    # 加载保存的模型
+    checkpoint = torch.load(model_path,device)
+    
+    # 检查是否为训练状态字典
+    if 'model_state_dict' in checkpoint:
+        # 仅加载模型参数
+        model.load_state_dict(checkpoint['model_state_dict'])
+        print(f"成功加载模型 (epoch: {checkpoint['epoch']})")
+    else:
+        # 如果是直接的模型状态字典
+        model.load_state_dict(checkpoint)
+        print("成功加载模型")
     model = model.to(device)
     model.eval()
     return model
@@ -90,7 +102,7 @@ def test_images_in_folder(image_folder, model_path, device, output_folder):
             total_time += processing_time
 
             # 计算预测误差（x坐标）
-            x_pred = (predicted_coords[0] * 176 / 2) + (176 / 2)
+            x_pred = (predicted_coords[0] * 640 / 2) + (640 / 2)
             error = abs(x_pred - label_x)  # 计算绝对误差
 
             # 累加误差
@@ -113,17 +125,17 @@ def test_images_in_folder(image_folder, model_path, device, output_folder):
     logger.info("Total number of images in the test set: %d", num_images)
     if num_images > 0:
         avg_error = total_error / num_images
-        acc_error = avg_error / 176 * 100
+        acc_error = avg_error / 640 * 100
         avg_time = total_time / num_images
         logger.info(f"The average error (x-coordinate) of all images: {avg_error:.2f} pixel")
-        logger.info(f"The model accuracy: {acc_error:.2f}%")
+        logger.info(f"The model averager error: {acc_error:.2f}%")
         logger.info(f"The average processing time per image: {avg_time:.6f} seconds")
     else:
         logger.warning("No pictures were processed")
 
 if __name__ == "__main__":
     # 配置文件夹路径和模型路径
-    image_folder = './test_label'  # 替换为你的图片文件夹路径
+    image_folder = './annotated_test'  # 替换为你的图片文件夹路径
     best_model_path = './pth/best_mobilenet_model.pth'  # 替换为你的最佳模型路径
     output_folder = './predicted_result'  # 存放预测结果的文件夹
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")

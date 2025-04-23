@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 # 文件夹路径
 input_folder = './images'
-output_folder = './annotated_images'
+output_folder = './annotated_images_1'
 
 # 检查输入文件夹是否存在
 if not os.path.exists(input_folder):
